@@ -4,6 +4,7 @@ const sequelize = db.sequelize;
 const { Op } = require("sequelize");
 const { release } = require('os');
 const { validationResult } = require('express-validator');
+const { error } = require('console');
 
 
 //Aqui tienen una forma de llamar a cada uno de los modelos
@@ -154,10 +155,24 @@ const moviesController = {
 
     },
     delete: function (req,res) {
+        Movies.findByPk(req.params.id)
+        .then(resultado=>{
+             res.render("moviesDelete",{Movie:resultado})
+        })
+        .catch(error=>{
+            res.send(error)
+        })
+       
 
     },
     destroy: function (req,res) {
-
+    Movies.destroy({
+        where:{id:req.params.id}
+    })
+    .then(resultado=>{
+        res.redirect("/movies")
+      })
+      .catch(error=>{res.send(error)})
     }
 }
 

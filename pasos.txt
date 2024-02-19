@@ -43,3 +43,18 @@ Luego, el controlador debe redirigir a la vista del listado de películas
 express-validator.
 ○ Optativo: utilizar los paquetes y modificaciones necesarias para que el
 método responda al pedido por PUT.
+
+
+● /movies/delete/:id (GET) --- Idealmente DELETE (Optativo)
+○ Previamente, debe agregarse en el detalle de la película (moviesDetail.ejs),
+un botón de “Borrar” que envíe a esta URL.
+○ El controlador (moviesController.js) recupera el id de la URL mediante
+req.params.
+○ El controlador debe devolver a la vista (moviesDelete.ejs), el nombre de la
+película a eliminar.
+○ Finalmente, si se desea eliminar la película, debe llamar a la ruta
+(/movies/delete/:id).
+○ El controlador deberá utilizar la conexión a la base de datos y el modelo de
+Película (Movie) ya creado.
+○ Mediante el método destroy se elimina el registro y luego se redirige al
+listado de películas (/movies).

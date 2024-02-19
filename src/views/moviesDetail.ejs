@@ -18,6 +18,10 @@
     <p>LENGTH: <%= movie.length + ' min'%> </p>
     <p>RELEASE DATE: <%= movie.release_date %> </p>
     <br>
+    <a href="/movies/add"><button>agregar</button></a>    
+    <a href="/movies/edit/<%= movie.id %>"><button>editar pelicula</button></a>
+    <a href="/movies/"><button>listar peliculas</button></a>
+
     <section>
         <!--Aquí debe colocar los botones de Modificar - Borrar y Listado de Películas-->
     </section>

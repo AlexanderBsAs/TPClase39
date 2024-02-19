@@ -2,6 +2,8 @@ const path = require('path');
 const db = require('../database/models');
 const sequelize = db.sequelize;
 const { Op } = require("sequelize");
+const { release } = require('os');
+const { validationResult } = require('express-validator');
 
 
 //Aqui tienen una forma de llamar a cada uno de los modelos
@@ -54,15 +56,101 @@ const moviesController = {
     },
     //Aqui dispongo las rutas para trabajar con el CRUD
     add: function (req, res) {
-        
+        Genres.findAll()
+        .then(resultado=>{
+             res.render("moviesAdd",{allGenres:resultado})
+        })
+       
     },
     create: function (req,res) {
+        const {title,rating,awards,release_date,length,genre_id}=req.body
+        let error=validationResult(req)
 
+        if(error.isEmpty()){
+             Movies.create({
+            title:title,
+            rating:rating,
+            awards:awards,
+            release_date:release_date,
+            length:length,
+            genre_id:genre_id
+
+        })
+        .then(resultado=>{
+            res.redirect("/movies")
+        })
+        .catch(error=>{
+        res.send(error)})
+        }
+       
+
+        else{
+            Genres.findAll()
+            .then(resultado=>{
+                 res.render("moviesAdd",{allGenres:resultado,errors:error.array(), old:req.body, title: "registro"})
+            })
+        
+        }
+        
     },
     edit: function(req,res) {
+        let id=req.params.id      
+        let generos=  
+        Movies.findByPk(id)
+        .then(Movie=>{
+     Genres.findAll()
+            .then(allGenres=>{
+    res.render("moviesEdit",{Movie,allGenres})
+            })
+            .catch(error=>{
+                res.send(error)
+            })
+            
+        })
+        .catch(error=>{
+            res.send(error)
+        })
 
     },
     update: function (req,res) {
+        let error=validationResult(req)
+        const {title,rating,awards,release_date,length,genre_id}=req.body
+        if(error.isEmpty()){
+            Movies.update({
+            title,
+            rating,
+            awards,
+            release_date,
+            length,
+            genre_id
+        },{
+            where:{id:req.params.id}
+        })
+        .then(resultado=>{
+            res.redirect("/movies")
+        })
+        .catch(error=>{
+            res.send(error)
+        })
+        }
+        else{
+            Movies.findByPk(req.params.id)
+            .then(Movie=>{
+            Genres.findAll()
+                .then(allGenres=>{
+        res.render("moviesEdit",{Movie,allGenres,errors:error.array(), old:req.body,})
+                })
+                .catch(error=>{
+                    res.send(error)
+                })
+                
+            })
+            .catch(error=>{
+                res.send(error)
+            })
+    
+        }
+       
 
     },
     delete: function (req,res) {

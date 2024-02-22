@@ -166,13 +166,18 @@ const moviesController = {
 
     },
     destroy: function (req,res) {
+    let pelicula= Movies.findByPk(req.params.id,{
+        include:[{association:"generos"},{association:"actores"}]
+     })
     Movies.destroy({
-        where:{id:req.params.id}
+        where:{where}
     })
     .then(resultado=>{
-        res.redirect("/movies")
-      })
-      .catch(error=>{res.send(error)})
+        res.redirect("/actors")
+    })
+    .catch(error=>{
+        res.send(error)
+    })
     }
 }
 

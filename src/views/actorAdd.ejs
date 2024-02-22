@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Movie add</title>
+    <link rel='stylesheet' href='/css/style.css' />
+</head>
+
+<body>
+    <figure>
+        <img src="/img/logo-DH.png" alt="Logo Digital House">
+      </figure>
+    <h1 class="titulo">Agregar Actor</h1>
+    <br>
+    <% if(locals.errors){%>
+        <% locals.errors.forEach(elemento=>{%>
+            <h1><%=elemento.msg%></h1>
+       <% }) %>
+
+    <% } %>
+    <section class="formulario">
+        <form action="/actors/create" method="POST">
+            <label for="first_name">Nombre </label>
+            <p><input type="text" name="first_name" id="" required></p>
+            <label for="last_name">Apellido </label>
+            <p><input type="text" name="last_name" id="" required> </p>
+            <label for="rating">rating </label>
+            <p><input type="number" name="rating" id="" required></p>
+            <p>
+                <select name="favorite_movie_id" id="" required>
+                    <option value="" disabled selected>- select pelicula - </option>
+                    <% allMovies.forEach(movie => { %>
+                    <option value="<%= movie.id %>"><%= movie.title %></option>
+                    <% }); %>
+                </select>
+            </p>
+            <p> <button class="botonAgregar" type="submit">Agregar</button>
+            
+            <a  class="botonVolver" href="/movies">Listado de Películas</a></p>
+        </form>
+    </section>
+    
+</body>
+
+</html>

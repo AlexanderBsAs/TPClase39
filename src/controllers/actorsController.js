@@ -100,6 +100,11 @@ let actorsController={
         })
     },
 
+    
+
+    //////////////BORRADO DE ACTOR ////////////////
+
+
     actorDestroy:(req,res)=>{
 
 

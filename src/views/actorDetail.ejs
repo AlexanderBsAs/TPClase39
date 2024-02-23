@@ -19,5 +19,14 @@
   
     <p><a href="/actors/edit/<%=actor.id  %>"> EDITAR</a></p>
     <p><a href="/actors">LISTADO DE ACTORES</a></p>
+    <p><a href="/actors/delete/<%= actor.id  %>">BORRAR ACTOR(CUIDADO)</a></p>
+
+    <form action="/actors/delete/<%= actor.id %>?_method=DELETE" method="POST">
+        <br>
+        <p> <button class="botonBorrar" type="submit">Borrar la Película</button>
+
+        </p>
+
+        </form>
 </body>
 </html>

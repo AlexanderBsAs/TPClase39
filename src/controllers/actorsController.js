@@ -5,6 +5,7 @@ const { Op } = require("sequelize");
 const { release } = require('os');
 const { validationResult } = require('express-validator');
 const { error } = require('console');
+const actor_movie = require('../database/models/actor_movie');
 
 
 //Aqui tienen una forma de llamar a cada uno de los modelos
@@ -51,7 +52,15 @@ let actorsController={
        })
 
        .then(resultado=>{
-        res.redirect("/actors")
+        db.actor_movie.create({
+            actor_id:resultado.id,
+            movie_id:resultado.favorite_movie_id
+
+        })
+        .then(resultado=>{
+             res.redirect("/actors")
+        })
+       
        })
        .catch(error=>{
         res.send(error)
@@ -78,7 +87,7 @@ let actorsController={
     actorUpdate:(req,res)=>{
         const{first_name,last_name,rating,favorite_movie_id}=req.body
 
-        actor.update({
+        Actors.update({
             first_name:first_name,
             last_name:last_name,
             rating:rating,
@@ -87,8 +96,37 @@ let actorsController={
             where:{id:req.params.id}
         })
         .then(resultado=>{
-            res.redirect("/actor")
+            res.redirect("/actors")
         })
+    },
+
+    actorDestroy:(req,res)=>{
+
+
+    db.actor_movie.destroy({where:{
+                actor_id:req.params.id
+             }})
+             .then(resultado=>{
+     Actors.destroy({
+            where:{
+                id:req.params.id
+            }
+        })
+         .then(resultado=>
+            res.redirect("/actors"))
+
+             })
+
+
+            
+
+        
+         .catch(error=>{
+                res.send(error)
+            })
+   
+       
+         
     }
 
 }
